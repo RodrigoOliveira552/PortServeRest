@@ -1,0 +1,268 @@
+{
+  "info": {
+    "_postman_id": "9524df3f-b6a4-4477-b784-5969e45841fb",
+    "name": "Nation_ServeRest_API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "15845844",
+    "_collection_link": "https://go.postman.co/collection/15845844-9524df3f-b6a4-4477-b784-5969e45841fb?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Criar Usuários",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code é 201 Created\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "});\r",
+              "\r",
+              "var jsonData = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Mensagem de sucesso está correta\", function () {\r",
+              "    pm.expect(jsonData.message).to.eql(\"Cadastro realizado com sucesso\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Resposta contém o _id do usuário criado\", function () {\r",
+              "    pm.expect(jsonData).to.have.property(\"_id\");\r",
+              "    pm.expect(jsonData._id).to.be.a(\"string\");\r",
+              "\r",
+              "pm.collectionVariables.set(\"idUsuario\", jsonData._id);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nome\": \"Teste2 Nation\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"teste\",\r\n  \"administrador\": \"true\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://serverest.dev/usuarios",
+          "protocol": "https",
+          "host": [
+            "serverest",
+            "dev"
+          ],
+          "path": [
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Buscar Usuário por ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code é 200 OK\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "var jsonData = pm.response.json();\r",
+              "\r",
+              "pm.test(\"O ID retornado é o mesmo do usuário recém-criado\", function () {\r",
+              "    pm.expect(jsonData._id).to.eql(pm.collectionVariables.get(\"idUsuario\"));\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://serverest.dev/usuarios/{{idUsuario}}",
+          "protocol": "https",
+          "host": [
+            "serverest",
+            "dev"
+          ],
+          "path": [
+            "usuarios",
+            "{{idUsuario}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code é 200 OK\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "var jsonData = pm.response.json();\r",
+              "\r",
+              "pm.collectionVariables.set(\"token\", jsonData.authorization)\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"Judah49@yahoo.com\",\r\n  \"password\": \"teste\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://serverest.dev/login",
+          "protocol": "https",
+          "host": [
+            "serverest",
+            "dev"
+          ],
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Editar Usuário",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code é 200 OK\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "var jsonData = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Mensagem de alteração correta\", function () {\r",
+              "    pm.expect(jsonData.message).to.eql(\"Registro alterado com sucesso\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nome\": \"User Atualizado\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"senha_atualizada\",\r\n  \"administrador\": \"true\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://serverest.dev/usuarios/{{idUsuario}}",
+          "protocol": "https",
+          "host": [
+            "serverest",
+            "dev"
+          ],
+          "path": [
+            "usuarios",
+            "{{idUsuario}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Deletar Usuário",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code é 200 OK\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "var jsonData = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Mensagem de exclusão correta\", function () {\r",
+              "    pm.expect(jsonData.message).to.eql(\"Registro excluído com sucesso\");\r",
+              "});\r",
+              "\r",
+              "pm.collectionVariables.unset(\"idUsuario\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://serverest.dev/usuarios/{{idUsuario}}",
+          "protocol": "https",
+          "host": [
+            "serverest",
+            "dev"
+          ],
+          "path": [
+            "usuarios",
+            "{{idUsuario}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "idUsuario",
+      "value": ""
+    }
+  ]
+}
